@@ -32,10 +32,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import api, {APIResponse, QueryConfig, QueryResult, Subscription} from "@/common/api"
+import api from "@/common/api"
+import type {APIResponse, QueryConfig, QueryResult, Subscription} from "@/common/api"
 import {onMounted, reactive, ref, toRefs, watch,} from 'vue'
-import {useRouter} from 'vue-router'
-import {date, Dialog, Notify, QTableColumn, QTableProps, useQuasar} from "quasar";
+import {date, Dialog, Notify,useTimeout} from "quasar"
+import type {QTableColumn, QTableProps} from "quasar"
 import formatDate = date.formatDate;
 
 const props = defineProps({
@@ -53,7 +54,7 @@ const columns: QTableColumn[] = [
   { name: 'operations', label: 'Operations', field: ''}
 
 ]
-const pagination = ref<QTableProps['pagination']>({
+const pagination = ref({
   sortBy: 'id',
   descending: true,
   page: 1,
@@ -63,15 +64,15 @@ const pagination = ref<QTableProps['pagination']>({
 })
 
 const queryParams = reactive<QueryConfig>({
-  orderBy: pagination.value.sortBy,
-  isDesc: pagination.value.descending,
-  pageIndex: pagination.value.page,
-  search: "",
-  pageSize: pagination.value.rowsPerPage,
+  "isDesc": pagination.value?.descending,
+  "orderBy": pagination.value?.sortBy?pagination.value?.sortBy:"id",
+  "pageIndex": pagination.value?.page,
+  "pageSize": pagination.value?.rowsPerPage,
+  "search": "",
 })
-const loading = ref(false)
+const { registerTimeout } = useTimeout()
 
-let lastSearch = null;
+const loading = ref(false)
 let apiData = reactive<APIResponse<QueryResult<Subscription>>>({
   code: 0,
   data: {
@@ -84,8 +85,7 @@ let apiData = reactive<APIResponse<QueryResult<Subscription>>>({
   message: ''
 })
 function onRequest (tableProps: Parameters<NonNullable<QTableProps['onRequest']>>[0]) {
-  clearTimeout(lastSearch);
-  lastSearch = setTimeout(() => {
+  registerTimeout(() => {
     queryParams.pageSize = tableProps.pagination.rowsPerPage
     queryParams.pageIndex = tableProps.pagination.page
     queryParams.orderBy = tableProps.pagination.sortBy
@@ -93,8 +93,7 @@ function onRequest (tableProps: Parameters<NonNullable<QTableProps['onRequest']>
     queryParams.search = tableProps.filter
     pagination.value.sortBy = tableProps.pagination.sortBy
     pagination.value.descending = tableProps.pagination.descending
-  }, 300);
-
+  }, 500);
 }
 function fetchData() {
   loading.value = true
@@ -137,7 +136,6 @@ function handleDelete(id: string) {
       }
     })
   })
-
 }
 
 
@@ -152,9 +150,8 @@ watch(
 )
 
 function searchData(rows: any[], terms:any) {
-
   queryParams.search = terms.search
-  lastSearch = setTimeout(() => {
+  registerTimeout(() => {
     fetchData();
   }, 700);
   return rows

@@ -2,9 +2,9 @@
 
 
   <div>
-    <h1>Product List
+    <h3>Product List
       <q-btn color="primary" label="Add Product" @click="routeToAddProduct" />
-    </h1>
+    </h3>
 
     <ProductList/>
   </div>

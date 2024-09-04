@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>Mail List
+    <h3>Mail List
       <q-btn color="primary" label="Add Subscription" @click="routeToAddSubscriptions" />
-    </h1>
+    </h3>
     <MailList/>
   </div>
 </template>

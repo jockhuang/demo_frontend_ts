@@ -41,7 +41,7 @@ const request = {
 export interface APIResponse<T> {
     code: number;
     message: string;
-    data?: T;
+    data: T;
 }
 
 export interface Product {
@@ -68,11 +68,11 @@ export interface Subscription {
 }
 
 export interface QueryConfig {
-    search: string
-    orderBy: string
-    isDesc: boolean
-    pageIndex: number
-    pageSize: number
+    search?: string
+    orderBy?: string
+    isDesc?: boolean
+    pageIndex?: number
+    pageSize?: number
 }
 
 export interface QueryResult<T> {

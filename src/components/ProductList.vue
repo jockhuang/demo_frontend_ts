@@ -39,10 +39,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import api, {APIResponse, Product, QueryConfig, QueryResult} from "@/common/api"
+import api from "@/common/api"
+import type {APIResponse, Product, QueryConfig, QueryResult} from "@/common/api"
 import {onMounted, reactive, watch,ref} from 'vue'
 import {useRouter} from 'vue-router'
-import {date, QTableColumn, QTableProps, Notify, useTimeout,Dialog} from 'quasar'
+import {date, Notify, useTimeout,Dialog} from 'quasar'
+import type { QTableColumn, QTableProps} from 'quasar'
 import formatDate = date.formatDate;
 
 const router = useRouter()
@@ -65,7 +67,7 @@ const columns: QTableColumn[] = [
   { name: 'operations', label: 'Operations', field: ''}
 ]
 const mySize = ref(props.mySize)
-const pagination = ref<QTableProps['pagination']>({
+const pagination = ref({
   sortBy: 'id',
   descending: true,
   page: 1,
@@ -75,11 +77,11 @@ const pagination = ref<QTableProps['pagination']>({
 })
 
 const queryParams = reactive<QueryConfig>({
-  orderBy: pagination.value.sortBy,
-  isDesc: pagination.value.descending,
-  pageIndex: pagination.value.page,
-  search: "",
-  pageSize: pagination.value.rowsPerPage,
+  "isDesc": pagination.value?.descending,
+  "orderBy": pagination.value?.sortBy?pagination.value?.sortBy:"id",
+  "pageIndex": pagination.value?.page,
+  "pageSize": pagination.value?.rowsPerPage,
+  "search": "",
 })
 const { registerTimeout } = useTimeout()
 const apiData = reactive<APIResponse<QueryResult<Product>>>({

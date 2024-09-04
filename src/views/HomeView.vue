@@ -47,12 +47,12 @@
     </div>
 
     <div>
-      <h2>Products:</h2>
+      <h4>Products:</h4>
       <ProductList :mySize="5"/>
     </div>
     <p/>
     <div>
-      <h2>Subscriptions:</h2>
+      <h4>Subscriptions:</h4>
       <SubscriptionList :mySize="5"/>
     </div>
   </div>
@@ -63,8 +63,8 @@ import { useQuasar } from 'quasar'
 import {onMounted, reactive} from 'vue'
 import SubscriptionList from '@/components/SubscriptionList.vue'
 import ProductList from '@/components/ProductList.vue'
-import api, {Statistic} from "@/common/api";
-
+import api from "@/common/api";
+import type {Statistic} from "@/common/api"
 const homeData = reactive<Statistic>({
   releasedProduct: 0,
   unReleasedProduct: 0,
