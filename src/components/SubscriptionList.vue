@@ -59,8 +59,8 @@ const pagination = ref({
   descending: true,
   page: 1,
   rowsPerPage: mySize.value,
-  rowsNumber: 0
-
+  rowsNumber: 0,
+  filter:""
 })
 
 const queryParams = reactive<QueryConfig>({
@@ -125,7 +125,6 @@ function handleDelete(id: string) {
           color: 'green',
           position: 'top'
         })
-
         fetchData()
       } else {
         Notify.create({

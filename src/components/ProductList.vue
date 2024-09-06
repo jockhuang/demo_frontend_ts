@@ -14,7 +14,6 @@
         row-key="id"
         title="Products"
         @request="onRequest"
-
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="200" v-model="pagination.filter" placeholder="Search">
@@ -72,8 +71,8 @@ const pagination = ref({
   descending: true,
   page: 1,
   rowsPerPage: mySize.value,
-  rowsNumber: 0
-
+  rowsNumber: 0,
+  filter:""
 })
 
 const queryParams = reactive<QueryConfig>({
@@ -138,7 +137,6 @@ function handleDelete(id: string) {
           color: 'green',
           position: 'top'
         })
-
         fetchData()
       } else {
         Notify.create({
@@ -149,7 +147,6 @@ function handleDelete(id: string) {
       }
     })
   })
-
 }
 
 function handleEdit(id: string) {
